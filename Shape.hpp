@@ -27,6 +27,18 @@ public:
    [[nodiscard]] std::string getPostScript() const override;
 };
 
+class Triangle : public Polygon {
+public:
+   explicit Triangle(double sideLength);
+};
+
+class Square : public Polygon {
+public:
+   explicit Square(double sideLength);
+};
+
 std::shared_ptr<Shape> makePolygon(int numSides, double sideLength);
+std::shared_ptr<Shape> makeTriangle(double sideLength);
+std::shared_ptr<Shape> makeSquare(double sideLength);
 
 #endif//CS372CPS_SHAPE_HPP

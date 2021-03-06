@@ -33,3 +33,13 @@ Polygon::Polygon(int numSides, double sideLength) : _numSides(numSides), _sideLe
 std::shared_ptr<Shape> makePolygon(int numSides, double sideLength) {
    return std::make_shared<Polygon>(numSides,sideLength);
 }
+
+std::shared_ptr<Shape> makeSquare(double sideLength) {
+   return std::make_shared<Square>(sideLength);
+}
+
+Square::Square(double sideLength):Polygon(4,sideLength) {
+}
+
+Triangle::Triangle(double sideLength):Polygon(3,sideLength) {
+}

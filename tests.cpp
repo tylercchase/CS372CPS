@@ -6,10 +6,10 @@
 using namespace Catch::literals; //NOLINT
 
 TEST_CASE("Polygon width and height") {
-   auto triangle = makePolygon(3,1);
+   auto triangle = makeTriangle(1);
    REQUIRE(triangle->getWidth() == 1.0_a);
    REQUIRE(triangle->getHeight() == Approx(sqrt(3.0)/2.0));
-   auto square = makePolygon(4,1);
+   auto square = makeSquare(1);
    REQUIRE(square->getWidth() == 1.0_a);
    REQUIRE(square->getHeight() == 1.0_a);
    auto hexagon = makePolygon(6,1);
