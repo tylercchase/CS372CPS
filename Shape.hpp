@@ -7,6 +7,10 @@
 
 #include <memory>
 #include <string>
+#include <vector>
+
+class Shape;
+using ShapePtr = std::shared_ptr<Shape>;
 
 class Shape {
 private:
@@ -16,10 +20,46 @@ public:
    [[nodiscard]] virtual std::string getPostScript() const = 0;
 };
 
+class Circle : public Shape {
+private:
+   double _radius;
+
+public:
+   explicit Circle(double radius);
+   [[nodiscard]] double getHeight() const override;
+   [[nodiscard]] double getWidth() const override;
+   [[nodiscard]] std::string getPostScript() const override;
+};
+
+class Rectangle : public Shape {
+private:
+   double _width;
+   double _height;
+
+public:
+   explicit Rectangle(double width, double height);
+   [[nodiscard]] double getHeight() const override;
+   [[nodiscard]] double getWidth() const override;
+   [[nodiscard]] std::string getPostScript() const override;
+};
+
+class Spacer : public Shape {
+private:
+   double _width;
+   double _height;
+
+public:
+   explicit Spacer(double width, double height);
+   [[nodiscard]] double getHeight() const override;
+   [[nodiscard]] double getWidth() const override;
+   [[nodiscard]] std::string getPostScript() const override;
+};
+
 class Polygon : public Shape {
 private:
    int _numSides;
    double _sideLength;
+
 public:
    Polygon(int numSides, double sideLength);
    [[nodiscard]] double getHeight() const override;
@@ -37,8 +77,70 @@ public:
    explicit Square(double sideLength);
 };
 
-std::shared_ptr<Shape> makePolygon(int numSides, double sideLength);
-std::shared_ptr<Shape> makeTriangle(double sideLength);
-std::shared_ptr<Shape> makeSquare(double sideLength);
+class ScaledShape : public Shape {
+public:
+   explicit ScaledShape(ShapePtr shape, double xScale, double yScale);
+   [[nodiscard]] double getHeight() const override;
+   [[nodiscard]] double getWidth() const override;
+   [[nodiscard]] std::string getPostScript() const override;
+private:
+   ShapePtr _shape;
+   double _xScale;
+   double _yScale;
+};
 
+enum class Rot {R90,R180,R270};
+
+class RotatedShape : public Shape {
+public:
+   explicit RotatedShape(ShapePtr shape, Rot rotation);
+   [[nodiscard]] double getHeight() const override;
+   [[nodiscard]] double getWidth() const override;
+   [[nodiscard]] std::string getPostScript() const override;
+private:
+   ShapePtr _shape;
+   Rot _rotation;
+};
+
+class LayeredShape : public Shape {
+public:
+   LayeredShape(std::initializer_list<ShapePtr> shapes);
+   [[nodiscard]] double getHeight() const override;
+   [[nodiscard]] double getWidth() const override;
+   [[nodiscard]] std::string getPostScript() const override;
+private:
+   std::vector<ShapePtr> _shapes;
+};
+
+class VerticalShape : public Shape {
+public:
+   VerticalShape(std::initializer_list<ShapePtr> shapes);
+   [[nodiscard]] double getHeight() const override;
+   [[nodiscard]] double getWidth() const override;
+   [[nodiscard]] std::string getPostScript() const override;
+private:
+   std::vector<ShapePtr> _shapes;
+};
+
+class HorizontalShape : public Shape {
+public:
+   HorizontalShape(std::initializer_list<ShapePtr> shapes);
+   [[nodiscard]] double getHeight() const override;
+   [[nodiscard]] double getWidth() const override;
+   [[nodiscard]] std::string getPostScript() const override;
+private:
+   std::vector<ShapePtr> _shapes;
+};
+
+ShapePtr makeCircle(double radius);
+ShapePtr makeRectangle(double width, double height);
+ShapePtr makeSpacer(double width, double height);
+ShapePtr makePolygon(int numSides, double sideLength);
+ShapePtr makeTriangle(double sideLength);
+ShapePtr makeSquare(double sideLength);
+ShapePtr makeScaledShape(ShapePtr shape, double xScale, double yScale);
+ShapePtr makeRotatedShape(ShapePtr shape, Rot rotation);
+ShapePtr makeLayeredShape(std::initializer_list<ShapePtr> shapes);
+ShapePtr makeVerticalShape(std::initializer_list<ShapePtr> shapes);
+ShapePtr makeHorizontalShape(std::initializer_list<ShapePtr> shapes);
 #endif//CS372CPS_SHAPE_HPP

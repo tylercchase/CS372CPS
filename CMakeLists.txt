@@ -11,7 +11,7 @@ FetchContent_MakeAvailable(Catch2)
 set(CMAKE_CXX_STANDARD 20)
 
 set(Warnings, $<$<OR:$<CXX_COMPILER_ID:Clang>,$<CXX_COMPILER_ID:AppleClang>,$<CXX_COMPILER_ID:GNU>>:
-        -Wall>
+        -Wall -Wextra -Wpedantic -Weverything>
         $<$<CXX_COMPILER_ID:MSVC>:
         /W4>)
 
