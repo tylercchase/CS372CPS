@@ -54,11 +54,11 @@ TEST_CASE("Compound Shapes width and height") { //NOLINT
    REQUIRE(layeredRectangles->getWidth() == 2.2_a);
    REQUIRE(layeredRectangles->getHeight() == 2.2_a);
 
-   auto horizontalRectangles = makeHorizontalShape({rectangle,rotatedRectangle90});
-   REQUIRE(horizontalRectangles->getWidth() == Approx(2.2+1.1));
+   auto horizontalRectangles = makeHorizontalShape({rectangle,rotatedRectangle90,rectangle});
+   REQUIRE(horizontalRectangles->getWidth() == Approx(1.1+2.2+1.1));
    REQUIRE(horizontalRectangles->getHeight() == 2.2_a);
 
-   auto verticalRectangles = makeVerticalShape({rectangle,rotatedRectangle90});
+   auto verticalRectangles = makeVerticalShape({rectangle,rotatedRectangle90,rectangle});
    REQUIRE(verticalRectangles->getWidth() == 2.2_a);
-   REQUIRE(verticalRectangles->getHeight() == Approx(2.2+1.1));
+   REQUIRE(verticalRectangles->getHeight() == Approx(2.2+1.1+2.2));
 }
