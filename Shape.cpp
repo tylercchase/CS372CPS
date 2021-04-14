@@ -21,13 +21,7 @@ double Circle::getWidth() const {
 }
 
 std::string Circle::getPostScript() const {
-   std::string output{"gsave\n"};
-
-   output += "currentpoint /y exch def /x exch def\nnewpath\n";
-   output += "x y " + std::to_string(_radius) + " 0 360 arc\n";
-   output += "closepath\nstroke\ngrestore\n";
-
-   return output;
+   return "gsave currentpoint translate newpath 0 0 " + std::to_string(_radius) + " 0 360 arc closepath stroke grestore\n";
 }
 
 Rectangle::Rectangle(double width, double height) : _width(width), _height(height) {
