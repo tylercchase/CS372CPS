@@ -234,11 +234,11 @@ double HorizontalShape::getWidth() const {
 
 std::string HorizontalShape::getPostScript() const {
    std::string output{"gsave\n"};
-   output += "0 " + std::to_string(-getHeight() / 2) + " rmoveto\n";
+   output += std::to_string(-getWidth() / 2) + " 0 rmoveto\n";
    for (const auto &shape : _shapes) {
-      output += "0 " + std::to_string(shape->getWidth() / 2) + " rmoveto\n";
+      output += std::to_string(shape->getWidth() / 2) + " 0 rmoveto\n";
       output += shape->getPostScript();
-      output += "0 " + std::to_string(shape->getWidth() / 2) + " rmoveto\n";
+      output += std::to_string(shape->getWidth() / 2) + " 0 rmoveto\n";
    }
    output += "grestore\n";
    return output;
