@@ -191,7 +191,7 @@ double VerticalShape::getHeight() const {
    for (const auto &shape : _shapes)
       sumOfHeights += shape->getHeight();
    return sumOfHeights;
-   // in C++20 we can return std::ranges::accumulate(_shapes,0,Shape::getHeight());
+   // in C++20 we couldazszza return std::ranges::accumulate(_shapes,0,Shape::getHeight());
 }
 
 double VerticalShape::getWidth() const {
