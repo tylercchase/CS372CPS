@@ -5,8 +5,7 @@
 #include "Shape.hpp"
 #include <algorithm>
 #include <cmath>
-#include <numbers>
-using std::numbers::pi;
+const double pi = 3.14159;
 #include <numeric>
 
 Circle::Circle(double radius) : _radius(radius) {
@@ -155,8 +154,19 @@ std::string RotatedShape::getPostScript() const {
 
    return output;
 }
+std::string MultipleShape::getPostScript() const {
+   std::string ps;
+   ps += "gsave\n";
+   for(auto i=0; i< getShapes().size();++i) {
+      ps += moveToPositionForShape(i);
+      ps += getShapes()[i]->getPostScript();
+      ps += moveToPositionForShape(i);
+   }
+   ps += "grestore\n";
 
-LayeredShape::LayeredShape(std::initializer_list<ShapePtr> shapes) : _shapes(shapes) {
+   return ps;
+}
+MultipleShape::MultipleShape(std::initializer_list<ShapePtr> shapes) : _shapes(shapes) {
 }
 
 double LayeredShape::getHeight() const {
@@ -174,17 +184,16 @@ double LayeredShape::getWidth() const {
    return maxWidth;
 }
 
-std::string LayeredShape::getPostScript() const {
+std::string LayeredShape::moveToPositionForShape(int i) const {
    //   std::string output{};
    //   for (const auto &shape : _shapes)
    //      output += shape->getPostScript();
    //   return output;
-   return std::accumulate(_shapes.begin(), _shapes.end(), std::string{},
-                          [](auto output, auto sPtr) { return output + sPtr->getPostScript(); });
+   return "";
+   // return std::accumulate(_shapes.begin(), _shapes.end(), std::string{},
+   //                        [](auto output, auto sPtr) { return output + sPtr->getPostScript(); });
 }
 
-VerticalShape::VerticalShape(std::initializer_list<ShapePtr> shapes) : _shapes(shapes) {
-}
 
 double VerticalShape::getHeight() const {
    double sumOfHeights = 0.0;
@@ -201,7 +210,8 @@ double VerticalShape::getWidth() const {
    return maxWidth;
 }
 
-std::string VerticalShape::getPostScript() const {
+std::string VerticalShape::moveToPositionForShape(int i) const {
+   return "0 " + std::to_string(getShapes()[i]->getHeight() / 2) + " rmoveto\n";
    std::string output{"gsave\n"};
    output += "0 " + std::to_string(-getHeight() / 2) + " rmoveto\n";
    for (const auto &shape : _shapes) {
@@ -212,9 +222,6 @@ std::string VerticalShape::getPostScript() const {
    output += "grestore\n";
 
    return output;
-}
-
-HorizontalShape::HorizontalShape(std::initializer_list<ShapePtr> shapes) : _shapes(shapes) {
 }
 
 double HorizontalShape::getHeight() const {
@@ -232,7 +239,8 @@ double HorizontalShape::getWidth() const {
    return sumOfWidths;
 }
 
-std::string HorizontalShape::getPostScript() const {
+std::string HorizontalShape::moveToPositionForShape(int i) const {
+   return  std::to_string(getShapes()[i]->getWidth() / 2) + " 0 rmoveto\n";
    std::string output{"gsave\n"};
    output += std::to_string(-getWidth() / 2) + " 0 rmoveto\n";
    for (const auto &shape : _shapes) {

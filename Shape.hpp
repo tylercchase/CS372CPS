@@ -101,35 +101,39 @@ private:
    ShapePtr _shape;
    Rot _rotation;
 };
-
-class LayeredShape : public Shape {
+class MultipleShape: public Shape {
+   public:
+      MultipleShape(const std::initializer_list<ShapePtr> shapes);
+      std::string getPostScript() const;
+   protected:
+      std::vector<ShapePtr> getShapes() const {return _shapes;};
+      virtual std::string moveToPositionForShape(int i) const = 0;
+      std::vector<ShapePtr> _shapes;
+};
+class LayeredShape : public MultipleShape {
 public:
-   LayeredShape(std::initializer_list<ShapePtr> shapes);
+   using MultipleShape::MultipleShape;
    [[nodiscard]] double getHeight() const override;
    [[nodiscard]] double getWidth() const override;
-   [[nodiscard]] std::string getPostScript() const override;
-private:
-   std::vector<ShapePtr> _shapes;
+   std::string moveToPositionForShape(int i) const;
 };
 
-class VerticalShape : public Shape {
+class VerticalShape : public MultipleShape {
 public:
-   VerticalShape(std::initializer_list<ShapePtr> shapes);
+   using MultipleShape::MultipleShape;
    [[nodiscard]] double getHeight() const override;
    [[nodiscard]] double getWidth() const override;
-   [[nodiscard]] std::string getPostScript() const override;
-private:
-   std::vector<ShapePtr> _shapes;
+   // [[nodiscard]] std::string getPostScript() const override;
+   std::string moveToPositionForShape(int i) const;
 };
 
-class HorizontalShape : public Shape {
+class HorizontalShape : public MultipleShape {
 public:
-   HorizontalShape(std::initializer_list<ShapePtr> shapes);
+   using MultipleShape::MultipleShape;
    [[nodiscard]] double getHeight() const override;
    [[nodiscard]] double getWidth() const override;
-   [[nodiscard]] std::string getPostScript() const override;
-private:
-   std::vector<ShapePtr> _shapes;
+   // [[nodiscard]] std::string getPostScript() const override;
+   std::string moveToPositionForShape(int i) const;
 };
 
 ShapePtr makeCircle(double radius);
