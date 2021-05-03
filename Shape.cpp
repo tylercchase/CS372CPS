@@ -185,13 +185,7 @@ double LayeredShape::getWidth() const {
 }
 
 std::string LayeredShape::moveToPositionForShape(int i) const {
-   //   std::string output{};
-   //   for (const auto &shape : _shapes)
-   //      output += shape->getPostScript();
-   //   return output;
    return "";
-   // return std::accumulate(_shapes.begin(), _shapes.end(), std::string{},
-   //                        [](auto output, auto sPtr) { return output + sPtr->getPostScript(); });
 }
 
 
@@ -212,16 +206,6 @@ double VerticalShape::getWidth() const {
 
 std::string VerticalShape::moveToPositionForShape(int i) const {
    return "0 " + std::to_string(getShapes()[i]->getHeight() / 2) + " rmoveto\n";
-   std::string output{"gsave\n"};
-   output += "0 " + std::to_string(-getHeight() / 2) + " rmoveto\n";
-   for (const auto &shape : _shapes) {
-      output += "0 " + std::to_string(shape->getHeight() / 2) + " rmoveto\n";
-      output += shape->getPostScript();
-      output += "0 " + std::to_string(shape->getHeight() / 2) + " rmoveto\n";
-   }
-   output += "grestore\n";
-
-   return output;
 }
 
 double HorizontalShape::getHeight() const {
@@ -241,15 +225,6 @@ double HorizontalShape::getWidth() const {
 
 std::string HorizontalShape::moveToPositionForShape(int i) const {
    return  std::to_string(getShapes()[i]->getWidth() / 2) + " 0 rmoveto\n";
-   std::string output{"gsave\n"};
-   output += std::to_string(-getWidth() / 2) + " 0 rmoveto\n";
-   for (const auto &shape : _shapes) {
-      output += std::to_string(shape->getWidth() / 2) + " 0 rmoveto\n";
-      output += shape->getPostScript();
-      output += std::to_string(shape->getWidth() / 2) + " 0 rmoveto\n";
-   }
-   output += "grestore\n";
-   return output;
 }
 
 ShapePtr makeCircle(double radius) {
