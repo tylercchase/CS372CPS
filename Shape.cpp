@@ -157,6 +157,7 @@ std::string RotatedShape::getPostScript() const {
 std::string MultipleShape::getPostScript() const {
    std::string ps;
    ps += "gsave\n";
+   ps += positionShape();
    for(auto i=0; i< getShapes().size();++i) {
       ps += moveToPositionForShape(i);
       ps += getShapes()[i]->getPostScript();
@@ -187,7 +188,9 @@ double LayeredShape::getWidth() const {
 std::string LayeredShape::moveToPositionForShape(int i) const {
    return "";
 }
-
+std::string LayeredShape::positionShape() const {
+   return "";
+}
 
 double VerticalShape::getHeight() const {
    double sumOfHeights = 0.0;
@@ -207,7 +210,11 @@ double VerticalShape::getWidth() const {
 std::string VerticalShape::moveToPositionForShape(int i) const {
    return "0 " + std::to_string(getShapes()[i]->getHeight() / 2) + " rmoveto\n";
 }
-
+std::string VerticalShape::positionShape() const {
+   std::string output{""};
+   output += "0 " + std::to_string(-getHeight() / 2) + " rmoveto\n";
+   return output;
+}
 double HorizontalShape::getHeight() const {
    double maxHeight = 0.0;
    for (const auto &shape : _shapes)
@@ -225,6 +232,11 @@ double HorizontalShape::getWidth() const {
 
 std::string HorizontalShape::moveToPositionForShape(int i) const {
    return  std::to_string(getShapes()[i]->getWidth() / 2) + " 0 rmoveto\n";
+}
+std::string HorizontalShape::positionShape() const {
+   std::string output{""};
+   output += std::to_string(-getWidth() / 2) + " 0 rmoveto\n";
+   return output;
 }
 
 ShapePtr makeCircle(double radius) {

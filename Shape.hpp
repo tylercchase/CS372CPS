@@ -108,6 +108,7 @@ class MultipleShape: public Shape {
    protected:
       std::vector<ShapePtr> getShapes() const {return _shapes;};
       virtual std::string moveToPositionForShape(int i) const = 0;
+      virtual std::string positionShape() const = 0;
       std::vector<ShapePtr> _shapes;
 };
 class LayeredShape : public MultipleShape {
@@ -115,6 +116,7 @@ public:
    using MultipleShape::MultipleShape;
    [[nodiscard]] double getHeight() const override;
    [[nodiscard]] double getWidth() const override;
+   std::string positionShape() const;
    std::string moveToPositionForShape(int i) const;
 };
 
@@ -124,6 +126,7 @@ public:
    [[nodiscard]] double getHeight() const override;
    [[nodiscard]] double getWidth() const override;
    // [[nodiscard]] std::string getPostScript() const override;
+   std::string positionShape() const;
    std::string moveToPositionForShape(int i) const;
 };
 
@@ -133,6 +136,7 @@ public:
    [[nodiscard]] double getHeight() const override;
    [[nodiscard]] double getWidth() const override;
    // [[nodiscard]] std::string getPostScript() const override;
+   std::string positionShape() const;
    std::string moveToPositionForShape(int i) const;
 };
 
